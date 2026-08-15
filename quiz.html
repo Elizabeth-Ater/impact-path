@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Take the Quiz — ImpactPath</title>
+<meta name="description" content="Answer 10 quick questions to find your Global Citizenship & Goals pillar.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Literata:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ PRELOADER ============ -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <svg class="preloader__compass" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="38" class="preloader__ring"/>
+    <path d="M50 18L58 50L50 82L42 50L50 18Z" class="preloader__needle"/>
+    <circle cx="50" cy="50" r="4" class="preloader__hub"/>
+  </svg>
+  <p class="preloader__label">Charting your journey…</p>
+</div>
+
+<!-- ============ NAV ============ -->
+<nav class="site-nav">
+  <div class="site-nav__inner">
+    <a href="index.html" class="site-nav__brand">
+      <svg class="compass-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.5" stroke="#F5F3EE" stroke-width="1.5"/>
+        <path d="M16 6L19 16L16 26L13 16L16 6Z" fill="#2DD4A7"/>
+        <circle cx="16" cy="16" r="2" fill="#F5F3EE"/>
+      </svg>
+      ImpactPath
+    </a>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="site-nav-panel">
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+    </button>
+    <div class="site-nav__panel" id="site-nav-panel">
+      <ul class="site-nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html" aria-current="page">Take the Quiz</a></li>
+        <li id="nav-results-link" style="display:none;"><a href="results.html">My Results</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="site-nav__auth">
+        <button class="btn btn--text" data-open-auth="login">Log in</button>
+        <button class="btn btn--primary" data-open-auth="signup">Sign up</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ QUIZ GATE: instructions + agreement ============
+     The actual quiz stays hidden
+     until the student ticks the agreement checkbox and clicks
+     "Start the quiz" — see js/quiz.js for the gating logic. -->
+<section class="quiz-gate container">
+  <div class="quiz-gate__card">
+    <h1>Before you start</h1>
+    <ul class="quiz-gate__rules">
+      <li>
+        <span class="quiz-gate__rule-icon" aria-hidden="true">⏱</span>
+        <span><strong>30 seconds per question.</strong> A fresh timer starts on each of the 10 questions — if it runs out, that question is skipped automatically.</span>
+      </li>
+      <li>
+        <span class="quiz-gate__rule-icon" aria-hidden="true">→</span>
+        <span><strong>No going back.</strong> Once you answer, or the timer expires, you move forward for good — there's no way to revisit or change a question.</span>
+      </li>
+      <li>
+        <span class="quiz-gate__rule-icon" aria-hidden="true">🎧</span>
+        <span><strong>Mixed formats.</strong> Most questions are multiple choice, plus one image, one audio prompt, and one video scenario.</span>
+      </li>
+      <li>
+        <span class="quiz-gate__rule-icon" aria-hidden="true">⌛</span>
+        <span>Takes about <strong>5 minutes</strong> total.</span>
+      </li>
+    </ul>
+
+    <div class="quiz-gate__ready">
+      <label class="quiz-gate__agree">
+        <input type="checkbox" id="quiz-gate-checkbox">
+        I understand the quiz is timed and I can't go back once I've started.
+      </label>
+      <button type="button" class="btn btn--primary btn--lg" id="quiz-gate-start-btn" disabled>Start the quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE QUIZ ITSELF (hidden until the gate is passed) ============ -->
+<div id="quiz-app" style="display:none;">
+
+<!-- ============ QUIZ HEADER: progress + timer ============ -->
+<section class="quiz-header">
+  <canvas class="particle-bg" aria-hidden="true"></canvas>
+  <div class="container">
+    <div class="quiz-header__top">
+      <span id="quiz-question-counter" class="quiz-question-counter">Question 1 of 10</span>
+
+      <!-- Live speed-streak badge: only shows once a streak of 2+
+           quick answers is building, giving visible feedback on
+           the scoring bonus that's already tracked in js/quiz.js -->
+      <div class="quiz-streak" id="quiz-streak" style="display:none;">
+        <span class="quiz-streak__icon" aria-hidden="true">🔥</span>
+        <span id="quiz-streak-count">0</span> streak
+      </div>
+
+      <div class="quiz-timer" id="quiz-timer-wrap">
+        <svg viewBox="0 0 20 20" class="quiz-timer__icon" aria-hidden="true">
+          <circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M10 5.5V10L13 12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span id="quiz-timer">00:30</span>
+      </div>
+    </div>
+
+    <!-- Custom progress indicator: one tick per question, colored by
+         the pillar that question's chosen answer leaned toward. -->
+    <div class="quiz-progress" id="quiz-progress" role="progressbar" aria-label="Quiz progress"></div>
+  </div>
+</section>
+
+<!-- ============ QUIZ CARD + FACT PANEL ============ -->
+<main class="quiz-main container">
+  <div class="quiz-layout">
+    <div class="quiz-primary">
+      <div class="quiz-card" id="quiz-card">
+        <!-- Populated dynamically by js/quiz.js -->
+      </div>
+
+      <div class="quiz-actions">
+        <button type="button" class="btn btn--primary btn--lg" id="quiz-next-btn" disabled>Next question</button>
+      </div>
+    </div>
+
+    <!-- "Did you know?" fact panel — swaps text per question via
+         js/quiz.js, reading from QUIZ_FACTS in js/quiz-data.js -->
+    <aside class="quiz-fact">
+      <span class="quiz-fact__label">Did you know?</span>
+      <p id="quiz-fact-text">Loading…</p>
+    </aside>
+  </div>
+</main>
+
+</div><!-- /#quiz-app -->
+
+<!-- ============ TIMEOUT LOCK OVERLAY ============ -->
+<div class="quiz-lock-overlay" id="quiz-lock-overlay">
+  <div class="quiz-lock-overlay__box">
+    <h2>Time's up</h2>
+    <p>Locking in your answers and calculating your results…</p>
+  </div>
+</div>
+
+<!-- ============ AUTH MODAL (shared) ============ -->
+<div class="modal-backdrop" id="auth-modal-backdrop">
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+    <button class="auth-modal__close" aria-label="Close">&times;</button>
+    <div class="auth-modal__tabs">
+      <button class="auth-modal__tab is-active" data-tab="login" id="auth-modal-title">Log in</button>
+      <button class="auth-modal__tab" data-tab="signup">Sign up</button>
+    </div>
+
+    <div class="auth-modal__panel is-active" data-panel="login">
+      <p class="auth-modal__sub">Welcome back — continue your journey plan.</p>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label class="field__label" for="login-email">Institutional email</label>
+          <input class="field__input" type="email" id="login-email" placeholder="name@student.bse.ac.mu">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <div class="field">
+          <label class="field__label" for="login-password">Password</label>
+          <input class="field__input" type="password" id="login-password" placeholder="••••••••">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;">Log in</button>
+        <p class="form-submit-status" role="status"></p>
+      </form>
+    </div>
+
+    <div class="auth-modal__panel" data-panel="signup">
+      <p class="auth-modal__sub">Create an account to save your results.</p>
+      <form id="signup-form" novalidate>
+        <div class="field">
+          <label class="field__label" for="signup-name">Full name</label>
+          <input class="field__input" type="text" id="signup-name" placeholder="Aïsha Ramgoolam">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <div class="field">
+          <label class="field__label" for="signup-email">Institutional email</label>
+          <input class="field__input" type="email" id="signup-email" placeholder="name@student.bse.ac.mu">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <div class="field">
+          <label class="field__label" for="signup-password">Password</label>
+          <input class="field__input" type="password" id="signup-password" placeholder="At least 8 characters">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;">Create account</button>
+        <p class="form-submit-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <!-- Accent bar echoing the four GCGO pillar colors used throughout the site -->
+  <div class="site-footer__accent" aria-hidden="true"></div>
+
+  <div class="container site-footer__top">
+    <div class="site-footer__col site-footer__col--brand">
+      <a href="index.html" class="site-footer__brand">
+        <svg class="compass-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="16" cy="16" r="14.5" stroke="#F5F3EE" stroke-width="1.5"/>
+          <path d="M16 6L19 16L16 26L13 16L16 6Z" fill="#2DD4A7"/>
+          <circle cx="16" cy="16" r="2" fill="#F5F3EE"/>
+        </svg>
+        ImpactPath
+      </a>
+      <p class="site-footer__tagline">Chart the cause that points your first year forward.</p>
+      <div class="site-footer__social">
+        <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Follow on X (Twitter)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.6 8.7L23.3 22H16.7l-5.2-6.8L5.6 22H2.4l8.1-9.3L1.5 2h6.8l4.7 6.2L18.9 2Zm-1.2 18h1.7L7.4 4H5.6l12.1 16Z"/></svg>
+        </a>
+        <a href="https://facebook.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Follow on Facebook">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg>
+        </a>
+        <a href="https://instagram.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="site-footer__col">
+      <h3 class="site-footer__heading">Quick Links</h3>
+      <ul class="site-footer__list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Take the Quiz</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <h3 class="site-footer__heading">Explore</h3>
+      <ul class="site-footer__list">
+        <li><a href="index.html#learn-more">What is GCGO?</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#details">Get Started</a></li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <h3 class="site-footer__heading">Stay Updated</h3>
+      <p class="site-footer__newsletter-copy">Occasional updates about new features — no spam.</p>
+      <form class="site-footer__newsletter" id="newsletter-form" novalidate>
+        <div class="field">
+          <input class="field__input" type="email" id="newsletter-email" placeholder="you@example.com" aria-label="Email address">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;">Subscribe</button>
+        <p class="form-submit-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="container site-footer__bottom">
+    <span class="site-footer__copyright">&copy; <span id="footer-year">2026</span> ImpactPath. All rights reserved.</span>
+    <button type="button" class="site-footer__top-btn" id="back-to-top" aria-label="Back to top">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3"/><path d="M3.5 7.5 8 3l4.5 4.5"/></svg>
+      Top
+    </button>
+  </div>
+</footer>
+
+<script src="js/validation.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/quiz-data.js"></script>
+<script src="js/quiz.js"></script>
+</body>
+</html>
+
