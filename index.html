@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ImpactPath — Chart Your Global Journey</title>
+<meta name="description" content="Discover which Global Citizenship & Goals pillar fits you best, and build your first-year Learning Journey Plan.">
+
+<!-- Google Fonts: Sora (display), Literata (body), JetBrains Mono (data/timer) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Literata:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ PRELOADER ============
+     Shown while fonts/assets load, then fades and removes itself.
+     Reuses the compass motif so the very first thing a visitor
+     sees already carries the site's signature. -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <svg class="preloader__compass" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="38" class="preloader__ring"/>
+    <path d="M50 18L58 50L50 82L42 50L50 18Z" class="preloader__needle"/>
+    <circle cx="50" cy="50" r="4" class="preloader__hub"/>
+  </svg>
+  <p class="preloader__label">Charting your journey…</p>
+</div>
+
+<!-- ============ NAV ============ -->
+<nav class="site-nav">
+  <div class="site-nav__inner">
+    <a href="index.html" class="site-nav__brand">
+      <!-- Compass mark: the site's recurring signature motif -->
+      <svg class="compass-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.5" stroke="#F5F3EE" stroke-width="1.5"/>
+        <path d="M16 6L19 16L16 26L13 16L16 6Z" fill="#2DD4A7"/>
+        <circle cx="16" cy="16" r="2" fill="#F5F3EE"/>
+      </svg>
+      ImpactPath
+    </a>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="site-nav-panel">
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+    </button>
+    <div class="site-nav__panel" id="site-nav-panel">
+      <ul class="site-nav__links">
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="quiz.html">Take the Quiz</a></li>
+        <!-- Hidden until js/auth.js finds saved quiz results in
+             localStorage — see "My Results" nav link section -->
+        <li id="nav-results-link" style="display:none;"><a href="results.html">My Results</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="site-nav__auth">
+        <button class="btn btn--text" data-open-auth="login">Log in</button>
+        <button class="btn btn--primary" data-open-auth="signup">Sign up</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <canvas class="particle-bg" aria-hidden="true"></canvas>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="hero__eyebrow">Global Citizenship &amp; Goals Advisor</p>
+      <h1 class="hero__title">Find the cause that points your <span class="text-accent">first year</span> forward.</h1>
+      <p class="hero__lead">
+        Every incoming student carries the seed of a cause — education, health, climate, or equality.
+        Answer a short interactive quiz and we'll chart which Global Citizenship &amp; Goals pillar
+        matches your strengths, then help you plan your first moves.
+      </p>
+      <div class="hero__actions">
+        <a href="quiz.html" class="btn btn--primary btn--lg">Start the quiz</a>
+        <button class="btn btn--ghost btn--lg" data-open-auth="signup">Create an account</button>
+      </div>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <!-- Signature compass graphic: four pillars as cardinal points -->
+      <svg viewBox="0 0 400 400" class="hero-compass">
+        <circle cx="200" cy="200" r="170" class="hc-ring hc-ring--outer"/>
+        <circle cx="200" cy="200" r="120" class="hc-ring hc-ring--inner"/>
+        <line x1="200" y1="30" x2="200" y2="370" class="hc-axis"/>
+        <line x1="30" y1="200" x2="370" y2="200" class="hc-axis"/>
+
+        <!-- North: Education -->
+        <g class="hc-point hc-point--education">
+          <circle cx="200" cy="45" r="22"/>
+          <text x="200" y="51" text-anchor="middle">ED</text>
+        </g>
+        <!-- East: Health -->
+        <g class="hc-point hc-point--health">
+          <circle cx="355" cy="200" r="22"/>
+          <text x="355" y="206" text-anchor="middle">HE</text>
+        </g>
+        <!-- South: Climate -->
+        <g class="hc-point hc-point--climate">
+          <circle cx="200" cy="355" r="22"/>
+          <text x="200" y="361" text-anchor="middle">CL</text>
+        </g>
+        <!-- West: Women Empowerment -->
+        <g class="hc-point hc-point--women">
+          <circle cx="45" cy="200" r="22"/>
+          <text x="45" y="206" text-anchor="middle">WE</text>
+        </g>
+
+        <circle cx="200" cy="200" r="6" fill="#F5F3EE"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PILLARS STRIP ============ -->
+<section class="pillars container" aria-label="The four GCGO pillars">
+  <article class="pillar-card pillar-card--education reveal" style="transition-delay:0ms">
+    <span class="pillar-card__tag">Education</span>
+    <p>Access, literacy, and lifelong learning for every community.</p>
+  </article>
+  <article class="pillar-card pillar-card--health reveal" style="transition-delay:80ms">
+    <span class="pillar-card__tag">Health</span>
+    <p>Wellbeing systems that reach the people furthest behind.</p>
+  </article>
+  <article class="pillar-card pillar-card--climate reveal" style="transition-delay:160ms">
+    <span class="pillar-card__tag">Climate Change</span>
+    <p>Action on the systems driving a warming, less stable planet.</p>
+  </article>
+  <article class="pillar-card pillar-card--women reveal" style="transition-delay:240ms">
+    <span class="pillar-card__tag">Women Empowerment</span>
+    <p>Equity in leadership, pay, safety, and opportunity.</p>
+  </article>
+</section>
+
+<!-- ============ PILLAR EXPLAINERS: description + video per pillar ============ -->
+<section class="explainers container" id="learn-more" aria-label="A closer look at each GCGO pillar">
+  <div class="explainers__intro">
+    <h2>What does each pillar actually mean?</h2>
+    <p>A closer look at what each Global Citizenship &amp; Goals pillar covers — and why it matters for your first year.</p>
+  </div>
+
+  <article class="explainer explainer--education reveal">
+    <div class="explainer__media">
+      <!-- Add a short explainer video at assets/video/education-explainer.mp4 -->
+      <video controls preload="none" src="assets/video/education-explainer.mp4">
+        Your browser doesn't support embedded video.
+      </video>
+    </div>
+    <div class="explainer__copy">
+      <span class="explainer__tag">Education</span>
+      <p>
+        Education is the multiplier goal — it's tied to nearly every other outcome that
+        matters, from lifetime earnings to civic participation to health literacy. Around
+        the world, over 250 million children and youth are still out of school, and many
+        more attend without ever learning to read. This pillar is about closing that gap:
+        expanding access, improving quality, and making sure a good education isn't
+        determined by zip code or income.
+      </p>
+    </div>
+  </article>
+
+  <article class="explainer explainer--health reveal">
+    <div class="explainer__media">
+      <!-- Add a short explainer video at assets/video/health-explainer.mp4 -->
+      <video controls preload="none" src="assets/video/health-explainer.mp4">
+        Your browser doesn't support embedded video.
+      </video>
+    </div>
+    <div class="explainer__copy">
+      <span class="explainer__tag">Health</span>
+      <p>
+        Health is the goal that makes every other goal possible — it's hard to learn, work,
+        or lead if basic health needs aren't met. Billions of people still lack access to
+        essential health services, mental health support remains chronically underfunded,
+        and preventable illness continues to shorten lives that better systems could save.
+        This pillar is about building health systems that reach people before a crisis
+        hits, not just respond after one.
+      </p>
+    </div>
+  </article>
+
+  <article class="explainer explainer--climate reveal">
+    <div class="explainer__media">
+      <!-- Add a short explainer video at assets/video/climate-explainer.mp4 -->
+      <video controls preload="none" src="assets/video/climate-explainer.mp4">
+        Your browser doesn't support embedded video.
+      </video>
+    </div>
+    <div class="explainer__copy">
+      <span class="explainer__tag">Climate Change</span>
+      <p>
+        Climate change reshapes every other goal on this list — it deepens poverty,
+        disrupts education, and worsens health outcomes for the communities least
+        responsible for causing it. Rising temperatures, extreme weather, and resource
+        scarcity aren't distant threats; they're already reordering how and where people
+        can safely live. This pillar is about the systems-level action needed to slow
+        that trajectory, and the community-level resilience needed to withstand what's
+        already locked in.
+      </p>
+    </div>
+  </article>
+
+  <article class="explainer explainer--women reveal">
+    <div class="explainer__media">
+      <!-- Add a short explainer video at assets/video/women-explainer.mp4 -->
+      <video controls preload="none" src="assets/video/women-explainer.mp4">
+        Your browser doesn't support embedded video.
+      </video>
+    </div>
+    <div class="explainer__copy">
+      <span class="explainer__tag">Women Empowerment</span>
+      <p>
+        Progress on every other goal moves faster when women have equal access to
+        education, health care, economic opportunity, and leadership — and stalls when
+        they don't. Despite decades of progress, women remain underrepresented in
+        leadership, underpaid for equal work, and disproportionately affected by poverty
+        and violence. This pillar is about closing those gaps directly — and recognizing
+        that empowering women accelerates all three of the other pillars, too.
+      </p>
+    </div>
+  </article>
+</section>
+
+<!-- ============ STUDENT DETAILS FORM ============ -->
+<section class="details container" id="details">
+  <div class="details__intro">
+    <h2>Before you start, tell us who you are</h2>
+    <p>We'll use this to personalize your results and save your Learning Journey Plan.</p>
+  </div>
+
+  <form id="student-details-form" class="details__form" novalidate>
+    <div class="field">
+      <label class="field__label" for="student-name">Full name</label>
+      <input class="field__input" type="text" id="student-name" name="studentName" placeholder="Aïsha Ramgoolam" autocomplete="name">
+      <small class="error-message" role="alert"></small>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="student-email">Institutional email</label>
+      <input class="field__input" type="email" id="student-email" name="studentEmail" placeholder="name@student.bse.ac.mu" autocomplete="email">
+      <small class="error-message" role="alert"></small>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="student-id">Student ID</label>
+      <input class="field__input" type="text" id="student-id" name="studentId" placeholder="BSE102345">
+      <small class="field__hint">Format: BSE followed by 6 digits.</small>
+      <small class="error-message" role="alert"></small>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="student-phone">Phone number</label>
+      <input class="field__input" type="tel" id="student-phone" name="studentPhone" placeholder="+230 5712 3456" autocomplete="tel">
+      <small class="error-message" role="alert"></small>
+    </div>
+
+    <button type="submit" class="btn btn--primary btn--lg">Continue to quiz</button>
+    <p class="form-submit-status" role="status"></p>
+  </form>
+</section>
+
+<!-- ============ STATS: animated counters ============ -->
+<section class="stats container reveal" aria-label="Why these pillars matter">
+  <div class="stats__grid">
+    <div class="stat-counter" data-target="20" data-decimals="0" data-suffix="%" style="--pillar-color: var(--color-education);">
+      <span class="stat-counter__value">0%</span>
+      <p>of children &amp; youth worldwide are out of school</p>
+    </div>
+    <div class="stat-counter" data-target="50" data-decimals="0" data-suffix="%" style="--pillar-color: var(--color-health);">
+      <span class="stat-counter__value">0%</span>
+      <p>of the world lacks access to essential health services</p>
+    </div>
+    <div class="stat-counter" data-target="2.7" data-decimals="1" data-suffix="°C" style="--pillar-color: var(--color-climate);">
+      <span class="stat-counter__value">0°C</span>
+      <p>potential global temperature rise by 2100</p>
+    </div>
+    <div class="stat-counter" data-target="30" data-decimals="0" data-suffix="%" style="--pillar-color: var(--color-women);">
+      <span class="stat-counter__value">0%</span>
+      <p>of research jobs worldwide are held by women</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============
+     Illustrative placeholder quotes for this coursework demo —
+     swap in real feedback once other students have tried the
+     quiz. Names are fictional, not real people. -->
+<section class="testimonials container reveal" aria-label="What students found">
+  <h2>What other students found</h2>
+  <div class="testimonial-grid">
+    <article class="testimonial-card" style="--pillar-color: var(--color-education);">
+      <p class="testimonial-card__quote">"I didn't expect a quiz to actually point me toward the tutoring society — but it did, and I'm still there a year later."</p>
+      <span class="testimonial-card__author">— Amara T., Education pillar</span>
+    </article>
+    <article class="testimonial-card" style="--pillar-color: var(--color-climate);">
+      <p class="testimonial-card__quote">"The recommendations felt specific to me, not generic. I joined the sustainability club the same week."</p>
+      <span class="testimonial-card__author">— Jordan K., Climate pillar</span>
+    </article>
+    <article class="testimonial-card" style="--pillar-color: var(--color-women);">
+      <p class="testimonial-card__quote">"Took five minutes and gave me a clearer sense of direction than orientation week did."</p>
+      <span class="testimonial-card__author">— Priya S., Women Empowerment pillar</span>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FAQ ACCORDION ============ -->
+<section class="faq container reveal" id="faq" aria-label="Frequently asked questions">
+  <h2>Frequently asked questions</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-item__question" aria-expanded="false">
+        How long does the quiz take?
+        <span class="faq-item__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-item__answer"><div>
+        <p>About 5 minutes — ten questions, each with its own 30-second timer, so it moves quickly.</p>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-item__question" aria-expanded="false">
+        Do I need to create an account?
+        <span class="faq-item__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-item__answer"><div>
+        <p>No — you can take the quiz and see your results without signing up. An account just lets you save your plan for later.</p>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-item__question" aria-expanded="false">
+        Can I retake the quiz?
+        <span class="faq-item__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-item__answer"><div>
+        <p>Yes, anytime — your results page has a "Retake the quiz" button, and each attempt is scored fresh.</p>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-item__question" aria-expanded="false">
+        What happens to my answers?
+        <span class="faq-item__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-item__answer"><div>
+        <p>Everything stays in your browser for this demo — nothing is sent to a server or stored anywhere else.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUTH MODAL (shared) ============ -->
+<div class="modal-backdrop" id="auth-modal-backdrop">
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+    <button class="auth-modal__close" aria-label="Close">&times;</button>
+    <div class="auth-modal__tabs">
+      <button class="auth-modal__tab is-active" data-tab="login" id="auth-modal-title">Log in</button>
+      <button class="auth-modal__tab" data-tab="signup">Sign up</button>
+    </div>
+
+    <div class="auth-modal__panel is-active" data-panel="login">
+      <p class="auth-modal__sub">Welcome back — continue your journey plan.</p>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label class="field__label" for="login-email">Institutional email</label>
+          <input class="field__input" type="email" id="login-email" placeholder="name@student.bse.ac.mu">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <div class="field">
+          <label class="field__label" for="login-password">Password</label>
+          <input class="field__input" type="password" id="login-password" placeholder="••••••••">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;">Log in</button>
+        <p class="form-submit-status" role="status"></p>
+      </form>
+    </div>
+
+    <div class="auth-modal__panel" data-panel="signup">
+      <p class="auth-modal__sub">Create an account to save your results.</p>
+      <form id="signup-form" novalidate>
+        <div class="field">
+          <label class="field__label" for="signup-name">Full name</label>
+          <input class="field__input" type="text" id="signup-name" placeholder="Aïsha Ramgoolam">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <div class="field">
+          <label class="field__label" for="signup-email">Institutional email</label>
+          <input class="field__input" type="email" id="signup-email" placeholder="name@student.bse.ac.mu">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <div class="field">
+          <label class="field__label" for="signup-password">Password</label>
+          <input class="field__input" type="password" id="signup-password" placeholder="At least 8 characters">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;">Create account</button>
+        <p class="form-submit-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <!-- Accent bar echoing the four GCGO pillar colors used throughout the site -->
+  <div class="site-footer__accent" aria-hidden="true"></div>
+
+  <div class="container site-footer__top">
+    <div class="site-footer__col site-footer__col--brand">
+      <a href="index.html" class="site-footer__brand">
+        <svg class="compass-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="16" cy="16" r="14.5" stroke="#F5F3EE" stroke-width="1.5"/>
+          <path d="M16 6L19 16L16 26L13 16L16 6Z" fill="#2DD4A7"/>
+          <circle cx="16" cy="16" r="2" fill="#F5F3EE"/>
+        </svg>
+        ImpactPath
+      </a>
+      <p class="site-footer__tagline">Chart the cause that points your first year forward.</p>
+      <div class="site-footer__social">
+        <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Follow on X (Twitter)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.6 8.7L23.3 22H16.7l-5.2-6.8L5.6 22H2.4l8.1-9.3L1.5 2h6.8l4.7 6.2L18.9 2Zm-1.2 18h1.7L7.4 4H5.6l12.1 16Z"/></svg>
+        </a>
+        <a href="https://facebook.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Follow on Facebook">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg>
+        </a>
+        <a href="https://instagram.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="site-footer__col">
+      <h3 class="site-footer__heading">Quick Links</h3>
+      <ul class="site-footer__list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Take the Quiz</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <h3 class="site-footer__heading">Explore</h3>
+      <ul class="site-footer__list">
+        <li><a href="index.html#learn-more">What is GCGO?</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#details">Get Started</a></li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <h3 class="site-footer__heading">Stay Updated</h3>
+      <p class="site-footer__newsletter-copy">Occasional updates about new features — no spam.</p>
+      <form class="site-footer__newsletter" id="newsletter-form" novalidate>
+        <div class="field">
+          <input class="field__input" type="email" id="newsletter-email" placeholder="you@example.com" aria-label="Email address">
+          <small class="error-message" role="alert"></small>
+        </div>
+        <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;">Subscribe</button>
+        <p class="form-submit-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="container site-footer__bottom">
+    <span class="site-footer__copyright">&copy; <span id="footer-year">2026</span> ImpactPath. All rights reserved.</span>
+    <button type="button" class="site-footer__top-btn" id="back-to-top" aria-label="Back to top">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3"/><path d="M3.5 7.5 8 3l4.5 4.5"/></svg>
+      Top
+    </button>
+  </div>
+</footer>
+
+<script src="js/validation.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>
+
