@@ -127,11 +127,8 @@ const QUIZ_QUESTIONS = [
     id: 'q10',
     type: 'video',
     prompt: 'Watch the scenario \u2014 it will pause partway through.',
-    // Placeholder path — add a copyright-free short clip here
-    // before submission. The pause behaviour still works without
-    // a real file; the transcript below covers the same beat.
-    videoSrc: 'assets/video/scenario-clip.mp4',
-    pauseAt: 5, // seconds — where the video auto-pauses via 'timeupdate'
+    videoSrc: 'videos/video-question.mp4',
+    pauseAt: 7, // seconds — where the video auto-pauses via 'timeupdate'
     transcript: 'A student council is choosing next term\u2019s campaign focus and the room is split.',
     options: [
       { text: 'Push for a free-textbook exchange', scores: { education: 3 } },
