@@ -14,8 +14,8 @@ const PATTERNS = {
   name: /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[\s'-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/,
 
   // Institutional email: standard email shape, but requires the
-  // student.id@bse.ac.mu style domain used by the university.
-  institutionalEmail: /^[a-zA-Z0-9._%+-]+@(student\.)?bse\.ac\.mu$/,
+  // student.id@alustudent.com style domain used by the university.
+  institutionalEmail: /^[a-zA-Z0-9._%+-]+@alustudent\.com$/,
 
   // General email fallback (used on the Contact page, where the
   // visitor may not be a BSE student).

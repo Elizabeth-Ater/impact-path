@@ -178,13 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const passInput = signupForm.querySelector('#signup-password');
 
     bindFieldValidation(nameInput, PATTERNS.name, 'Use letters only, e.g. Aïsha Ramgoolam.');
-    bindFieldValidation(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@student.bse.ac.mu.');
+    bindFieldValidation(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@alustudent.com.');
     bindFieldValidation(passInput, PATTERNS.password, 'At least 8 characters, with a letter and a number.');
 
     signupForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const validName = validateField(nameInput, PATTERNS.name, 'Use letters only, e.g. Aïsha Ramgoolam.');
-      const validEmail = validateField(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@student.bse.ac.mu.');
+      const validEmail = validateField(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@alustudent.com.');
       const validPass = validateField(passInput, PATTERNS.password, 'At least 8 characters, with a letter and a number.');
 
       const statusEl = signupForm.querySelector('.form-submit-status');
@@ -208,11 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = loginForm.querySelector('#login-email');
     const passInput = loginForm.querySelector('#login-password');
 
-    bindFieldValidation(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@student.bse.ac.mu.');
+    bindFieldValidation(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@alustudent.com.');
 
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const validEmail = validateField(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@student.bse.ac.mu.');
+      const validEmail = validateField(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@alustudent.com.');
       const statusEl = loginForm.querySelector('.form-submit-status');
 
       if (validEmail && passInput.value.trim().length > 0) {

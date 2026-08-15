@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Real-time validation as the student types or leaves each field
   bindFieldValidation(nameInput, PATTERNS.name, 'Letters only — no numbers or symbols, e.g. Aïsha Ramgoolam.');
-  bindFieldValidation(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@student.bse.ac.mu.');
+  bindFieldValidation(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@alustudent.com.');
   bindFieldValidation(idInput, PATTERNS.studentId, 'Format: BSE followed by 6 digits, e.g. BSE102345.');
   bindFieldValidation(phoneInput, PATTERNS.phone, 'Enter 7–15 digits, optionally starting with +.');
 
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
 
     const validName = validateField(nameInput, PATTERNS.name, 'Letters only — no numbers or symbols, e.g. Aïsha Ramgoolam.');
-    const validEmail = validateField(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@student.bse.ac.mu.');
+    const validEmail = validateField(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@alustudent.com.');
     const validId = validateField(idInput, PATTERNS.studentId, 'Format: BSE followed by 6 digits, e.g. BSE102345.');
     const validPhone = validateField(phoneInput, PATTERNS.phone, 'Enter 7–15 digits, optionally starting with +.');
 
