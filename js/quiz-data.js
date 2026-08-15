@@ -114,9 +114,7 @@ const QUIZ_QUESTIONS = [
     id: 'q9',
     type: 'audio',
     prompt: 'Listen to the scenario, then choose how you\u2019d respond.',
-    // Placeholder path — add a copyright-free narration clip here
-    // (e.g. a self-recorded VO or a CC0 track) before submission.
-    audioSrc: 'assets/audio/audio-question.mp3',
+    audioSrc: 'audio/audio-question.mp3',
     transcript: '"Your neighbourhood just lost its only free clinic. Families now travel two hours for a checkup." What do you do first?',
     options: [
       { text: 'Start a petition for a mobile health unit', scores: { health: 3 } },
