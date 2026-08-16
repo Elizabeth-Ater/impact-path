@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const validName = validateField(nameInput, PATTERNS.name, 'Letters only — no numbers or symbols, e.g. Aïsha Ramgoolam.');
+    const validName = validateField(nameInput, PATTERNS.name, 'Letters only — no numbers or symbols, e.g. Elizabeth Ater.');
     const validEmail = validateField(emailInput, PATTERNS.institutionalEmail, 'Use your institutional email, e.g. name@alustudent.com.');
     const validId = validateField(idInput, PATTERNS.studentId, 'Format: BSE followed by 6 digits, e.g. BSE102345.');
     const validPhone = validateField(phoneInput, PATTERNS.phone, 'Enter 7–15 digits, optionally starting with +.');
