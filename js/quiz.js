@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wrap = document.createElement('div');
     wrap.className = 'media-wrap';
     wrap.innerHTML = `
-      <video id="quiz-video" src="${q.videoSrc}" controls preload="none" playsinline></video>
+      <video id="quiz-video" src="${q.videoSrc}" controls preload="metadata" playsinline></video>
       <p class="media-transcript"><strong>Scenario so far:</strong> ${q.transcript}</p>
       <p class="media-hint" id="video-hint">Play the clip — it will pause automatically so you can decide.</p>
     `;
