@@ -22,7 +22,7 @@ const PATTERNS = {
   generalEmail: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 
   // Student ID: institution prefix "BSE" + 6 digits, e.g. BSE102345.
-  studentId: /^BSE\d{6}$/i,
+  studentId: /^BSE\d{6}$/,
 
   // Phone number: optional +country code, then 7-15 digits, allowing
   // spaces/hyphens for readability (e.g. +230 5712 3456).
