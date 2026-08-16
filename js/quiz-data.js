@@ -128,7 +128,7 @@ const QUIZ_QUESTIONS = [
     type: 'video',
     prompt: 'Watch the scenario \u2014 it will pause partway through.',
     videoSrc: 'videos/video-question.mp4',
-    pauseAt: 7, // seconds — where the video auto-pauses via 'timeupdate'
+    pauseAt: 6, // seconds — where the video auto-pauses via 'timeupdate'
     transcript: 'A student council is choosing next term\u2019s campaign focus and the room is split.',
     options: [
       { text: 'Push for a free-textbook exchange', scores: { education: 3 } },
@@ -156,8 +156,8 @@ const QUIZ_FACTS = [
   'Community health workers can extend basic care to populations hours away from the nearest clinic.',
   'Reforestation projects can start measurably improving local air and water quality within just a few years.',
   'Mentorship is repeatedly shown to be one of the strongest predictors of career advancement for underrepresented groups.',
-  'Peer tutoring benefits both people involved — explaining a concept reinforces the tutor\u2019s own understanding of it.',
-  'Small, consistent actions — not just big policy shifts — are often what sustain long-term progress on global goals.',
+  'Peer tutoring benefits both people involved. Explaining a concept reinforces the tutor\u2019s own understanding of it.',
+  'Small, consistent actions not just big policy shifts are often what sustain long-term progress on global goals.',
 ];
 
 window.QUIZ_FACTS = QUIZ_FACTS;
