@@ -350,6 +350,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Fallback: if the clip finishes playing before ever reaching
+    // pauseAt (e.g. pauseAt is set close to or past the actual clip
+    // length, or the browser's timeupdate ticks skip past the exact
+    // threshold), reveal the options anyway instead of leaving the
+    // question hanging with no way to proceed.
+    video.addEventListener('ended', () => {
+      if (!hasPaused) {
+        hasPaused = true;
+        hint.textContent = 'Choose how the scenario continues below.';
+        renderOptionsBelow(q);
+      }
+    });
+
     // Fallback: if the placeholder video file can't load, let the
     // student proceed straight to the decision from the transcript.
     video.addEventListener('error', () => {
