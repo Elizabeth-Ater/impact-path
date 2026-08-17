@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wasQuick = elapsedSeconds <= QUICK_ANSWER_THRESHOLD;
 
     streak = wasQuick ? Math.min(streak + 1, MAX_STREAK_BONUS) : 0;
+    bestStreak = Math.max(bestStreak, streak);
     const multiplier = 1 + streak * 0.1;
     updateStreakBadge();
 
@@ -424,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
       answeredCount: answered.filter(Boolean).length,
       totalQuestions: QUIZ_QUESTIONS.length,
       timeUsedSeconds: Math.round((Date.now() - quizStartedAt) / 1000),
-      maxStreak: streak,
+      maxStreak: bestStreak,
       completedAt: new Date().toISOString(),
     };
     localStorage.setItem('gcgo_quiz_results', JSON.stringify(results));
