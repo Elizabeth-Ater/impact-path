@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let timerHandle = null;
   let questionStartedAt = Date.now();
   let quizStartedAt = Date.now();
-  let streak = 0;
+  let streak = 0; 
+  let bestStreak = 0; // tracks the highest streak achieved during this quiz session
   let isLocked = false;          // true only during the brief "time's up" transition
   let questionAnswered = false;  // has the current question already been answered?
 
